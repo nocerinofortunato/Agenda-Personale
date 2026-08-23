@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+<title>Agenda Personale</title>
+</head>
+<body>
+<header>
+  <div>
+    <div class="eyebrow">LA MIA AGENDA</div>
+    <h1>Agenda Personale</h1>
+    <p id="today"></p>
+  </div>
+  <button id="addBtn" class="primary">＋ Nuovo</button>
+</header>
+
+<main>
+  <section class="tabs">
+    <button class="tab active" data-view="todayView">Oggi</button>
+    <button class="tab" data-view="calendarView">Calendario</button>
+    <button class="tab" data-view="tasksView">Attività</button>
+  </section>
+
+  <section id="todayView" class="view active">
+    <div class="summary">
+      <div><strong id="eventCount">0</strong><span>Impegni oggi</span></div>
+      <div><strong id="taskCount">0</strong><span>Attività</span></div>
+    </div>
+    <div id="todayList" class="list"></div>
+  </section>
+
+  <section id="calendarView" class="view">
+    <div class="card">
+      <h2>Calendario</h2>
+      <input id="calendarDate" type="date">
+    </div>
+    <div id="dateList" class="list"></div>
+  </section>
+
+  <section id="tasksView" class="view">
+    <div class="card">
+      <h2>Attività</h2>
+      <p class="muted">Le attività verranno sincronizzate con il tuo account nella prossima versione.</p>
+    </div>
+  </section>
+</main>
+
+<div id="modal" class="modal hidden">
+  <div class="modalBox">
+    <div class="modalHead"><h2>Nuovo impegno</h2><button id="closeBtn">✕</button></div>
+    <form id="eventForm">
+      <label>Titolo<input id="title" required placeholder="Es. Riunione"></label>
+      <label>Descrizione<textarea id="description" rows="3" placeholder="Di cosa si tratta?"></textarea></label>
+      <div class="row">
+        <label>Data<input id="date" type="date" required></label>
+        <label>Ora<input id="time" type="time" required></label>
+      </div>
+      <label>Categoria
+        <select id="category">
+          <option>Lavoro</option>
+          <option>Congregazione</option>
+          <option>Personale</option>
+        </select>
+      </label>
+      <label>Promemoria
+        <select id="reminder">
+          <option value="0">All'orario dell'impegno</option>
+          <option value="10">10 minuti prima</option>
+          <option value="30" selected>30 minuti prima</option>
+          <option value="60">1 ora prima</option>
+          <option value="1440">1 giorno prima</option>
+        </select>
+      </label>
+      <label>Note<textarea id="notes" rows="3" placeholder="Note opzionali"></textarea></label>
+      <button class="primary full" type="submit">Salva impegno</button>
+    </form>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
