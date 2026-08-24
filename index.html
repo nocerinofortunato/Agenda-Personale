@@ -8,17 +8,23 @@
 <link rel="stylesheet" href="style.css">
 <title>Agenda Personale</title>
 </head>
+
 <body>
+
 <header>
   <div>
     <div class="eyebrow">LA MIA AGENDA</div>
     <h1>Agenda Personale</h1>
     <p id="today"></p>
   </div>
-  <button id="addBtn" class="primary">＋ Nuovo</button>
+
+  <button id="addBtn" class="primary" type="button">
+    ＋ Nuovo
+  </button>
 </header>
 
 <main>
+
   <section class="tabs">
     <button class="tab active" data-view="todayView">Oggi</button>
     <button class="tab" data-view="weekView">Settimanale</button>
@@ -27,117 +33,385 @@
     <button class="tab" data-view="tasksView">Attività</button>
   </section>
 
+
+  <!-- ================= OGGI ================= -->
+
   <section id="todayView" class="view active">
+
     <div class="summary">
-      <div><strong id="eventCount">0</strong><span>Impegni oggi</span></div>
-      <div><strong id="taskCount">0</strong><span>Attività</span></div>
+      <div>
+        <strong id="eventCount">0</strong>
+        <span>Impegni oggi</span>
+      </div>
+
+      <div>
+        <strong id="taskCount">0</strong>
+        <span>Attività</span>
+      </div>
     </div>
+
     <div id="todayList" class="list"></div>
+
   </section>
 
+
+  <!-- ================= SETTIMANALE ================= -->
+
   <section id="weekView" class="view">
+
     <div class="sectionTitle">
+
       <div>
         <h2>Settimana</h2>
         <p id="weekLabel" class="muted"></p>
       </div>
-      <button id="weekTodayBtn" class="smallBtn" type="button">Oggi</button>
+
+      <button id="weekTodayBtn"
+              class="smallBtn"
+              type="button">
+        Oggi
+      </button>
+
     </div>
-    <div id="weekPicker" class="dayPicker" aria-label="Giorni della settimana"></div>
+
+    <div id="weekPicker"
+         class="dayPicker"
+         aria-label="Giorni della settimana">
+    </div>
+
     <div class="selectedDayTitle">
       <h3 id="weekSelectedLabel"></h3>
-      <p class="muted">Impegni del giorno selezionato</p>
+      <p class="muted">
+        Impegni del giorno selezionato
+      </p>
     </div>
+
     <div id="weekDayList" class="list"></div>
+
   </section>
+
+
+  <!-- ================= MENSILE ================= -->
 
   <section id="monthView" class="view">
-    <div class="sectionTitle">
+
+    <div class="calendarHeader">
+
+      <button id="monthPrevBtn"
+              class="navBtn"
+              type="button"
+              aria-label="Mese precedente">
+        ‹
+      </button>
+
       <div>
-        <h2>Panoramica mensile</h2>
-        <p id="monthLabel" class="muted"></p>
+        <h2 id="monthTitle"></h2>
+
+        <button id="monthTodayBtn"
+                class="todayBtn"
+                type="button">
+          Oggi
+        </button>
       </div>
+
+      <button id="monthNextBtn"
+              class="navBtn"
+              type="button"
+              aria-label="Mese successivo">
+        ›
+      </button>
+
     </div>
-    <div id="monthList" class="monthGrid"></div>
+
+    <div id="monthGrid"
+         class="calendarGrid">
+    </div>
+
+    <div class="selectedDayTitle">
+      <h3 id="monthSelectedLabel"></h3>
+      <p class="muted">
+        Impegni del giorno selezionato
+      </p>
+    </div>
+
+    <div id="monthDayList" class="list"></div>
+
   </section>
+
+
+  <!-- ================= CALENDARIO ================= -->
 
   <section id="calendarView" class="view">
+
     <div class="calendarHeader">
-      <button id="prevMonthBtn" class="navBtn" type="button">‹</button>
+
+      <button id="prevMonthBtn"
+              class="navBtn"
+              type="button"
+              aria-label="Mese precedente">
+        ‹
+      </button>
+
       <div>
         <h2 id="calendarTitle"></h2>
-        <button id="calendarTodayBtn" class="todayBtn" type="button">Oggi</button>
+
+        <button id="calendarTodayBtn"
+                class="todayBtn"
+                type="button">
+          Oggi
+        </button>
       </div>
-      <button id="nextMonthBtn" class="navBtn" type="button">›</button>
+
+      <button id="nextMonthBtn"
+              class="navBtn"
+              type="button"
+              aria-label="Mese successivo">
+        ›
+      </button>
+
     </div>
-    <div id="calendarGrid" class="calendarGrid"></div>
+
+    <div id="calendarGrid"
+         class="calendarGrid">
+    </div>
+
     <div class="selectedDayTitle">
       <h3 id="calendarSelectedLabel"></h3>
-      <p class="muted">Impegni del giorno selezionato</p>
+      <p class="muted">
+        Impegni del giorno selezionato
+      </p>
     </div>
+
     <div id="dateList" class="list"></div>
+
   </section>
+
+
+  <!-- ================= ATTIVITÀ ================= -->
 
   <section id="tasksView" class="view">
+
     <div class="card">
+
       <h2>Attività</h2>
-      <p class="muted">Le attività verranno sincronizzate con il tuo account nella prossima versione.</p>
+
+      <p class="muted">
+        Le attività verranno sincronizzate con il tuo account
+        nella prossima versione.
+      </p>
+
     </div>
+
   </section>
+
 </main>
 
+
+<!-- ================= NUOVO / MODIFICA ================= -->
+
 <div id="modal" class="modal hidden">
+
   <div class="modalBox">
+
     <div class="modalHead">
-      <h2 id="modalTitle">Nuovo impegno</h2>
-      <button id="closeBtn" type="button">✕</button>
+
+      <h2 id="modalTitle">
+        Nuovo impegno
+      </h2>
+
+      <button id="closeBtn"
+              type="button">
+        ✕
+      </button>
+
     </div>
+
+
     <form id="eventForm">
-      <label>Titolo<input id="title" required placeholder="Es. Riunione"></label>
-      <label>Descrizione<textarea id="description" rows="3" placeholder="Di cosa si tratta?"></textarea></label>
+
+      <label>
+        Titolo
+
+        <input id="title"
+               required
+               placeholder="Es. Riunione">
+      </label>
+
+
+      <label>
+        Descrizione
+
+        <textarea id="description"
+                  rows="3"
+                  placeholder="Di cosa si tratta?"></textarea>
+      </label>
+
+
       <div class="row">
-        <label>Data<input id="date" type="date" required></label>
-        <label>Ora<input id="time" type="time" required></label>
+
+        <label>
+          Data
+
+          <input id="date"
+                 type="date"
+                 required>
+        </label>
+
+
+        <label>
+          Ora
+
+          <input id="time"
+                 type="time"
+                 required>
+        </label>
+
       </div>
-      <label>Categoria
+
+
+      <label>
+        Categoria
+
         <select id="category">
+
           <option>Lavoro</option>
+
           <option>Congregazione</option>
+
           <option>Personale</option>
+
         </select>
+
       </label>
-      <label>Quando ricordarmelo?
+
+
+      <label>
+        Quando ricordarmelo?
+
         <select id="reminder">
-          <option value="0">All'orario dell'impegno</option>
-          <option value="10">10 minuti prima</option>
-          <option value="30" selected>30 minuti prima</option>
-          <option value="60">1 ora prima</option>
-          <option value="1440">1 giorno prima</option>
+
+          <option value="0">
+            All'orario dell'impegno
+          </option>
+
+          <option value="10">
+            10 minuti prima
+          </option>
+
+          <option value="30" selected>
+            30 minuti prima
+          </option>
+
+          <option value="60">
+            1 ora prima
+          </option>
+
+          <option value="1440">
+            1 giorno prima
+          </option>
+
         </select>
+
       </label>
-      <label>Tipo di promemoria
+
+
+      <label>
+        Tipo di promemoria
+
         <select id="reminderType">
-          <option value="notification" selected>🔔 Notifica</option>
-          <option value="alarm">⏰ Allarme: suona finché lo stoppo</option>
+
+          <option value="notification" selected>
+            🔔 Notifica Push
+          </option>
+
+          <option value="alarm">
+            ⏰ Allarme
+          </option>
+
         </select>
+
       </label>
-      <p class="formHint">L'allarme continuo a telefono bloccato richiederà la futura versione Android nativa. Nella PWA funziona quando l'app è attiva.</p>
-      <label>Note<textarea id="notes" rows="3" placeholder="Note opzionali"></textarea></label>
-      <button id="saveEventBtn" class="primary full" type="submit">Salva impegno</button>
+
+
+      <div class="pushInfo">
+
+        <strong>🔔 Notifiche Push</strong>
+
+        <p id="pushStatus">
+          Per ricevere i promemoria anche con l'Agenda chiusa,
+          abilita le notifiche Push.
+        </p>
+
+        <button id="enablePushBtn"
+                class="smallBtn"
+                type="button">
+          Abilita notifiche Push
+        </button>
+
+      </div>
+
+
+      <p class="formHint">
+        L'allarme continuo verrà sviluppato in una fase successiva.
+        Per ora utilizziamo le notifiche Push.
+      </p>
+
+
+      <label>
+        Note
+
+        <textarea id="notes"
+                  rows="3"
+                  placeholder="Note opzionali"></textarea>
+      </label>
+
+
+      <button id="saveEventBtn"
+              class="primary full"
+              type="submit">
+        Salva impegno
+      </button>
+
     </form>
+
   </div>
+
 </div>
 
-<div id="alarmModal" class="alarmModal hidden">
+
+<!-- ================= ALLARME ================= -->
+
+<div id="alarmModal"
+     class="alarmModal hidden">
+
   <div class="alarmBox">
-    <div class="alarmIcon">⏰</div>
-    <div class="eyebrow">PROMEMORIA</div>
-    <h2 id="alarmTitle">È il momento!</h2>
+
+    <div class="alarmIcon">
+      ⏰
+    </div>
+
+    <div class="eyebrow">
+      PROMEMORIA
+    </div>
+
+    <h2 id="alarmTitle">
+      È il momento!
+    </h2>
+
     <p id="alarmInfo"></p>
-    <button id="stopAlarmBtn" class="stopAlarm" type="button">STOP ALLARME</button>
+
+    <button id="stopAlarmBtn"
+            class="stopAlarm"
+            type="button">
+      STOP ALLARME
+    </button>
+
   </div>
+
 </div>
+
 
 <script src="app.js"></script>
+
 </body>
 </html>
