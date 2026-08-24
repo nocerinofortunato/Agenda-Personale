@@ -1,26 +1,12 @@
-# Agenda Personale
+# Agenda Personale — aggiornamento promemoria
 
-Prima versione prototipale della tua agenda.
+Modifiche:
+- scelta del tipo di promemoria: Notifica oppure Allarme;
+- allarme con schermata STOP e suono in loop quando la PWA è aperta;
+- notifiche persistenti con `requireInteraction` quando il browser le supporta;
+- Service Worker aggiornato e cache versionata;
+- logo scelto inserito come icona PWA in `icons/icon-192.png` e `icons/icon-512.png`;
+- panoramiche settimanale e mensile mantenute.
 
-Funzioni presenti:
-- Oggi
-- Calendario
-- Inserimento impegni
-- Categorie: Lavoro, Congregazione, Personale
-- Promemoria configurabili
-- Descrizione e note
-- Installazione come PWA
-- Salvataggio locale nel browser
-
-Prossimo sviluppo:
-1. account personale
-2. database cloud e sincronizzazione tra dispositivi
-3. notifiche affidabili anche con app chiusa
-4. attività ricorrenti
-5. modifica/eliminazione degli impegni
-6. versione Android installabile
-
-Questa versione non sincronizza ancora i dati: è la base dell'interfaccia e della logica.
-
-
-Questa versione include manifest, icone e service worker per l'installazione come app standalone su Android.
+Nota Android/Chrome:
+una PWA web non può garantire una vera suoneria continua a telefono bloccato/app completamente chiusa. Per quello serve un sistema push con backend oppure un'app Android nativa. Questa versione risolve il bug principale (non veniva mai programmato alcun promemoria) e fornisce il comportamento di allarme quando la PWA è attiva.

@@ -36,44 +36,28 @@
   </section>
 
   <section id="weekView" class="view">
-    <div class="sectionTitle">
-      <div>
-        <h2>Panoramica settimanale</h2>
-        <p id="weekLabel" class="muted"></p>
-      </div>
-    </div>
+    <div class="sectionTitle"><div><h2>Panoramica settimanale</h2><p id="weekLabel" class="muted"></p></div></div>
     <div id="weekList" class="weekGrid"></div>
   </section>
 
   <section id="monthView" class="view">
-    <div class="sectionTitle">
-      <div>
-        <h2>Panoramica mensile</h2>
-        <p id="monthLabel" class="muted"></p>
-      </div>
-    </div>
+    <div class="sectionTitle"><div><h2>Panoramica mensile</h2><p id="monthLabel" class="muted"></p></div></div>
     <div id="monthList" class="monthGrid"></div>
   </section>
 
   <section id="calendarView" class="view">
-    <div class="card">
-      <h2>Calendario</h2>
-      <input id="calendarDate" type="date">
-    </div>
+    <div class="card"><h2>Calendario</h2><input id="calendarDate" type="date"></div>
     <div id="dateList" class="list"></div>
   </section>
 
   <section id="tasksView" class="view">
-    <div class="card">
-      <h2>Attività</h2>
-      <p class="muted">Le attività verranno sincronizzate con il tuo account nella prossima versione.</p>
-    </div>
+    <div class="card"><h2>Attività</h2><p class="muted">Le attività verranno sincronizzate con il tuo account nella prossima versione.</p></div>
   </section>
 </main>
 
 <div id="modal" class="modal hidden">
   <div class="modalBox">
-    <div class="modalHead"><h2>Nuovo impegno</h2><button id="closeBtn">✕</button></div>
+    <div class="modalHead"><h2>Nuovo impegno</h2><button id="closeBtn" type="button">✕</button></div>
     <form id="eventForm">
       <label>Titolo<input id="title" required placeholder="Es. Riunione"></label>
       <label>Descrizione<textarea id="description" rows="3" placeholder="Di cosa si tratta?"></textarea></label>
@@ -83,12 +67,10 @@
       </div>
       <label>Categoria
         <select id="category">
-          <option>Lavoro</option>
-          <option>Congregazione</option>
-          <option>Personale</option>
+          <option>Lavoro</option><option>Congregazione</option><option>Personale</option>
         </select>
       </label>
-      <label>Promemoria
+      <label>Quando ricordarmelo?
         <select id="reminder">
           <option value="0">All'orario dell'impegno</option>
           <option value="10">10 minuti prima</option>
@@ -97,11 +79,29 @@
           <option value="1440">1 giorno prima</option>
         </select>
       </label>
+      <label>Tipo di promemoria
+        <select id="reminderType">
+          <option value="notification" selected>🔔 Notifica</option>
+          <option value="alarm">⏰ Allarme: suona finché lo stoppo</option>
+        </select>
+      </label>
+      <p class="formHint">L'allarme usa il suono del dispositivo quando l'app è aperta. Se l'app è chiusa, Android/Chrome non permette a una PWA di garantire una suoneria continua senza un sistema di notifiche push o un'app nativa.</p>
       <label>Note<textarea id="notes" rows="3" placeholder="Note opzionali"></textarea></label>
       <button class="primary full" type="submit">Salva impegno</button>
     </form>
   </div>
 </div>
+
+<div id="alarmModal" class="alarmModal hidden">
+  <div class="alarmBox">
+    <div class="alarmIcon">⏰</div>
+    <div class="eyebrow">PROMEMORIA</div>
+    <h2 id="alarmTitle">È il momento!</h2>
+    <p id="alarmInfo"></p>
+    <button id="stopAlarmBtn" class="stopAlarm" type="button">STOP ALLARME</button>
+  </div>
+</div>
+
 <script src="app.js"></script>
 </body>
 </html>
