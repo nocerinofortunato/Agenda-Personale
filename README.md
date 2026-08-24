@@ -21,3 +21,6 @@ Prossimo sviluppo:
 6. versione Android installabile
 
 Questa versione non sincronizza ancora i dati: è la base dell'interfaccia e della logica.
+
+
+Questa versione include manifest, icone e service worker per l'installazione come app standalone su Android.

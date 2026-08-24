@@ -21,6 +21,8 @@
 <main>
   <section class="tabs">
     <button class="tab active" data-view="todayView">Oggi</button>
+    <button class="tab" data-view="weekView">Settimanale</button>
+    <button class="tab" data-view="monthView">Mensile</button>
     <button class="tab" data-view="calendarView">Calendario</button>
     <button class="tab" data-view="tasksView">Attività</button>
   </section>
@@ -31,6 +33,26 @@
       <div><strong id="taskCount">0</strong><span>Attività</span></div>
     </div>
     <div id="todayList" class="list"></div>
+  </section>
+
+  <section id="weekView" class="view">
+    <div class="sectionTitle">
+      <div>
+        <h2>Panoramica settimanale</h2>
+        <p id="weekLabel" class="muted"></p>
+      </div>
+    </div>
+    <div id="weekList" class="weekGrid"></div>
+  </section>
+
+  <section id="monthView" class="view">
+    <div class="sectionTitle">
+      <div>
+        <h2>Panoramica mensile</h2>
+        <p id="monthLabel" class="muted"></p>
+      </div>
+    </div>
+    <div id="monthList" class="monthGrid"></div>
   </section>
 
   <section id="calendarView" class="view">

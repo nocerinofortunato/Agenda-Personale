@@ -1,1 +1,20 @@
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f5f7fb;color:#111827}header{background:#111827;color:white;padding:28px 20px 24px;display:flex;justify-content:space-between;gap:16px;align-items:end}h1{margin:3px 0 4px;font-size:28px}.eyebrow{font-size:11px;letter-spacing:2px;opacity:.65}header p{margin:0;opacity:.7}.primary{border:0;border-radius:12px;padding:12px 16px;background:white;color:#111827;font-weight:700;cursor:pointer}.tabs{display:flex;gap:8px;padding:14px 16px;position:sticky;top:0;background:#f5f7fb;z-index:2}.tab{border:0;background:#e8ebf0;padding:10px 16px;border-radius:999px;font-weight:600}.tab.active{background:#111827;color:white}.view{display:none;padding:0 16px 30px;max-width:760px;margin:auto}.view.active{display:block}.summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4px 0 16px}.summary div,.card{background:white;border-radius:16px;padding:18px;box-shadow:0 3px 15px #00000008}.summary strong{display:block;font-size:25px}.summary span{font-size:13px;color:#6b7280}.event{background:white;border-radius:16px;padding:16px;margin:10px 0;border-left:5px solid #111827;box-shadow:0 3px 15px #00000008}.event.Lavoro{border-color:#2563eb}.event.Congregazione{border-color:#7c3aed}.event.Personale{border-color:#059669}.eventTop{display:flex;justify-content:space-between;gap:12px}.time{font-weight:800}.badge{font-size:12px;font-weight:700;padding:5px 8px;border-radius:999px;background:#eef2ff}.meta,.muted{color:#6b7280;font-size:13px}.modal{position:fixed;inset:0;background:#0008;display:grid;place-items:end center;padding:12px;z-index:5}.modal.hidden{display:none}.modalBox{background:white;width:min(560px,100%);max-height:92vh;overflow:auto;border-radius:20px;padding:20px}.modalHead{display:flex;justify-content:space-between;align-items:center}.modalHead button{border:0;background:#f1f2f4;border-radius:10px;padding:8px}.modal label{display:block;font-size:13px;font-weight:700;margin:13px 0}.modal input,.modal select,.modal textarea{width:100%;margin-top:6px;border:1px solid #d7dbe2;border-radius:10px;padding:11px;font:inherit}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.full{width:100%;margin-top:10px}.empty{padding:35px;text-align:center;color:#6b7280}.list{padding-bottom:30px}@media(max-width:520px){header{align-items:start;flex-direction:column}.primary{align-self:stretch}.row{grid-template-columns:1fr}}
+.sectionTitle{display:flex;justify-content:space-between;align-items:center;margin:8px 0 14px}
+.sectionTitle h2{margin:0 0 4px}
+.weekGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;overflow-x:auto;padding-bottom:8px}
+.dayColumn{background:white;border-radius:14px;padding:10px;min-width:125px;box-shadow:0 3px 15px #00000008}
+.dayHead{font-weight:800;font-size:14px;margin-bottom:8px}
+.dayDate{font-size:12px;color:#6b7280;margin-top:2px}
+.miniEvent{border-left:4px solid #111827;background:#f7f8fa;border-radius:9px;padding:8px;margin:7px 0;font-size:12px}
+.miniEvent.Lavoro{border-color:#2563eb}.miniEvent.Congregazione{border-color:#7c3aed}.miniEvent.Personale{border-color:#059669}
+.miniTime{font-weight:800}.miniTitle{margin-top:2px;line-height:1.25}
+.monthGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.monthCell{background:white;min-height:90px;border-radius:10px;padding:7px;box-shadow:0 2px 10px #00000006}
+.monthCell.other{opacity:.4}
+.monthCell.today{outline:2px solid #111827}
+.monthNumber{font-size:12px;font-weight:800;margin-bottom:5px}
+.monthEvent{font-size:10px;line-height:1.2;border-left:3px solid #111827;padding-left:4px;margin:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.monthEvent.Lavoro{border-color:#2563eb}.monthEvent.Congregazione{border-color:#7c3aed}.monthEvent.Personale{border-color:#059669}
+.weekdayHead{font-size:11px;font-weight:800;text-align:center;color:#6b7280;padding:3px}
+@media(max-width:900px){.weekGrid{grid-template-columns:repeat(7,125px)}}
+@media(max-width:520px){.tabs{overflow-x:auto}.tab{white-space:nowrap}.monthCell{min-height:70px;padding:5px}.monthEvent{font-size:9px}}
