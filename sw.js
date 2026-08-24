@@ -1,4 +1,4 @@
-const CACHE="agenda-personale-v3";
+const CACHE="agenda-personale-v4";
 
 const ASSETS=[
   "./",
