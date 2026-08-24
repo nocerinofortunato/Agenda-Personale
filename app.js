@@ -35,38 +35,49 @@ let selectedCalendarDate = iso(today);
 
 
 /* =========================================================
-   CARICAMENTO DATI
+   PUSH
+   ========================================================= */
+
+const VAPID_PUBLIC_KEY = "";
+const PUSH_SERVER_URL = "";
+
+
+/* =========================================================
+   CARICAMENTO E SALVATAGGIO
    ========================================================= */
 
 function loadEvents() {
 
   try {
 
-    const saved = localStorage.getItem(EVENTS_KEY);
+    const saved =
+      localStorage.getItem(EVENTS_KEY);
 
     if (!saved) {
       events = [];
       return;
     }
 
-    const parsed = JSON.parse(saved);
+    const parsed =
+      JSON.parse(saved);
 
-    events = Array.isArray(parsed) ? parsed : [];
+    events =
+      Array.isArray(parsed)
+        ? parsed
+        : [];
 
   } catch (error) {
 
-    console.error("Errore caricamento impegni:", error);
+    console.error(
+      "Errore caricamento impegni:",
+      error
+    );
 
     events = [];
 
   }
-
 }
 
-
-/* =========================================================
-   SALVATAGGIO
-   ========================================================= */
 
 function saveEvents() {
 
@@ -81,12 +92,14 @@ function saveEvents() {
 
   } catch (error) {
 
-    console.error("Errore salvataggio impegni:", error);
+    console.error(
+      "Errore salvataggio impegni:",
+      error
+    );
 
     return false;
 
   }
-
 }
 
 
@@ -133,14 +146,15 @@ function reminderText(value) {
       return "nessun promemoria";
 
   }
-
 }
 
 
 function eventMap(dateString) {
 
   return events
-    .filter(event => event.date === dateString)
+    .filter(event =>
+      event.date === dateString
+    )
     .sort((a, b) =>
       String(a.time || "").localeCompare(
         String(b.time || "")
@@ -154,11 +168,16 @@ function startOfWeek(date) {
 
   const d = new Date(date);
 
-  const day = (d.getDay() + 6) % 7;
+  const day =
+    (d.getDay() + 6) % 7;
 
-  d.setDate(d.getDate() - day);
+  d.setDate(
+    d.getDate() - day
+  );
 
-  d.setHours(0, 0, 0, 0);
+  d.setHours(
+    0, 0, 0, 0
+  );
 
   return d;
 
@@ -177,105 +196,114 @@ function startOfMonth(date) {
 
 
 /* =========================================================
-   RENDER IMPEGNI
+   RENDER LISTA IMPEGNI
    ========================================================= */
 
-function renderEventList(container, date) {
+function renderEventList(
+  container,
+  date
+) {
 
-  const list = eventMap(date);
+  const list =
+    eventMap(date);
+
 
   if (!list.length) {
 
     container.innerHTML =
-      `<div class="empty">Nessun impegno per questa giornata.</div>`;
+      `<div class="empty">
+        Nessun impegno per questa giornata.
+      </div>`;
 
     return 0;
 
   }
 
 
-  container.innerHTML = list.map(event => `
+  container.innerHTML =
+    list.map(event => `
 
-    <article class="event ${escapeHtml(event.category)}">
+      <article class="event ${escapeHtml(event.category)}">
 
-      <div class="eventTop">
+        <div class="eventTop">
 
-        <div class="time">
-          ${escapeHtml(event.time)}
+          <div class="time">
+            ${escapeHtml(event.time)}
+          </div>
+
+          <span class="badge">
+            ${escapeHtml(event.category)}
+          </span>
+
         </div>
 
-        <span class="badge">
-          ${escapeHtml(event.category)}
-        </span>
 
-      </div>
+        <h3>
+          ${escapeHtml(event.title)}
+        </h3>
 
-
-      <h3>
-        ${escapeHtml(event.title)}
-      </h3>
-
-
-      ${
-        event.description
-          ? `
-            <div class="meta">
-              <strong>Descrizione:</strong>
-              ${escapeHtml(event.description)}
-            </div>
-          `
-          : ""
-      }
-
-
-      ${
-        event.notes
-          ? `
-            <div class="meta">
-              <strong>Note:</strong>
-              ${escapeHtml(event.notes)}
-            </div>
-          `
-          : ""
-      }
-
-
-      <div class="meta">
-
-        🔔 ${reminderText(event.reminder)}
-
-        ·
 
         ${
-          event.reminderType === "alarm"
-            ? "⏰ Allarme"
-            : "🔔 Notifica Push"
+          event.description
+            ? `
+              <div class="meta">
+                <strong>Descrizione:</strong>
+                ${escapeHtml(event.description)}
+              </div>
+            `
+            : ""
         }
 
-      </div>
+
+        ${
+          event.notes
+            ? `
+              <div class="meta">
+                <strong>Note:</strong>
+                ${escapeHtml(event.notes)}
+              </div>
+            `
+            : ""
+        }
 
 
-      <div class="eventActions">
+        <div class="meta">
 
-        <button
-          type="button"
-          class="editEventBtn"
-          data-id="${event.id}">
-          ✏️ Modifica
-        </button>
+          🔔 ${reminderText(event.reminder)}
 
-        <button
-          type="button"
-          class="deleteEventBtn"
-          data-id="${event.id}">
-          🗑️ Elimina
-        </button>
+          ·
 
-      </div>
+          ${
+            event.reminderType === "alarm"
+              ? "⏰ Allarme"
+              : "🔔 Notifica Push"
+          }
 
-    </article>
+        </div>
 
-  `).join("");
+
+        <div class="eventActions">
+
+          <button
+            type="button"
+            class="editEventBtn"
+            data-id="${event.id}">
+            ✏️ Modifica
+          </button>
+
+          <button
+            type="button"
+            class="deleteEventBtn"
+            data-id="${event.id}">
+            🗑️ Elimina
+          </button>
+
+        </div>
+
+      </article>
+
+    `).join("");
+
 
   return list.length;
 
@@ -294,9 +322,11 @@ function renderToday() {
       iso(today)
     );
 
-  $("eventCount").textContent = count;
+  $("eventCount").textContent =
+    count;
 
-  $("taskCount").textContent = "0";
+  $("taskCount").textContent =
+    "0";
 
 }
 
@@ -307,99 +337,126 @@ function renderToday() {
 
 function renderWeek() {
 
-  const start = startOfWeek(today);
+  const start =
+    startOfWeek(today);
 
   const days = [];
 
-  for (let i = 0; i < 7; i++) {
+  for (
+    let i = 0;
+    i < 7;
+    i++
+  ) {
 
-    const d = new Date(start);
+    const d =
+      new Date(start);
 
-    d.setDate(start.getDate() + i);
+    d.setDate(
+      start.getDate() + i
+    );
 
     days.push(d);
 
   }
 
 
-  const end = days[6];
+  const end =
+    days[6];
+
 
   $("weekLabel").textContent =
-    `${start.toLocaleDateString("it-IT", {
-      day: "numeric",
-      month: "long"
-    })} – ${end.toLocaleDateString("it-IT", {
-      day: "numeric",
-      month: "long",
-      year: "numeric"
-    })}`;
+    `${start.toLocaleDateString(
+      "it-IT",
+      {
+        day: "numeric",
+        month: "long"
+      }
+    )} – ${end.toLocaleDateString(
+      "it-IT",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }
+    )}`;
 
 
-  $("weekPicker").innerHTML = days.map(day => {
+  $("weekPicker").innerHTML =
+    days.map(day => {
 
-    const date = iso(day);
+      const date =
+        iso(day);
 
-    const list = eventMap(date);
+      const list =
+        eventMap(date);
 
-    const selected =
-      date === selectedWeekDate;
+      const selected =
+        date === selectedWeekDate;
 
-    const isToday =
-      date === iso(today);
+      const isToday =
+        date === iso(today);
 
-    const weekday =
-      day.toLocaleDateString(
-        "it-IT",
-        { weekday: "short" }
-      ).replace(".", "");
+      const weekday =
+        day.toLocaleDateString(
+          "it-IT",
+          {
+            weekday: "short"
+          }
+        ).replace(".", "");
 
-    const month =
-      day.toLocaleDateString(
-        "it-IT",
-        { month: "short" }
-      ).replace(".", "");
+      const month =
+        day.toLocaleDateString(
+          "it-IT",
+          {
+            month: "short"
+          }
+        ).replace(".", "");
 
 
-    return `
+      return `
 
-      <button
-        type="button"
-        class="dayChoice ${
-          selected ? "selected" : ""
-        } ${
-          isToday ? "today" : ""
-        }"
-        data-week-date="${date}">
+        <button
+          type="button"
+          class="dayChoice ${
+            selected ? "selected" : ""
+          } ${
+            isToday ? "today" : ""
+          }"
+          data-week-date="${date}">
 
-        <div class="dow">
-          ${weekday}
-        </div>
+          <div class="dow">
+            ${weekday}
+          </div>
 
-        <div class="num">
-          ${day.getDate()}
-        </div>
+          <div class="num">
+            ${day.getDate()}
+          </div>
 
-        <div class="mon">
-          ${month}
-        </div>
+          <div class="mon">
+            ${month}
+          </div>
 
-        ${
-          list.length
-            ? `
-              <div class="eventDots">
-                ${list.slice(0, 3).map(() =>
-                  `<span class="eventDot"></span>`
-                ).join("")}
-              </div>
-            `
-            : ""
-        }
+          ${
+            list.length
+              ? `
+                <div class="eventDots">
 
-      </button>
+                  ${list.slice(0, 3)
+                    .map(() =>
+                      `<span class="eventDot"></span>`
+                    )
+                    .join("")}
 
-    `;
+                </div>
+              `
+              : ""
+          }
 
-  }).join("");
+        </button>
+
+      `;
+
+    }).join("");
 
 
   const selectedDate =
@@ -446,13 +503,14 @@ function renderWeek() {
 
 
 /* =========================================================
-   CALENDARIO MENSILE
+   MENSILE
    ========================================================= */
 
 function renderInteractiveMonth() {
 
   const first =
     startOfMonth(monthCursor);
+
 
   $("monthTitle").textContent =
     first.toLocaleDateString(
@@ -469,11 +527,18 @@ function renderInteractiveMonth() {
 
   const cells = [];
 
-  for (let i = 0; i < 42; i++) {
+  for (
+    let i = 0;
+    i < 42;
+    i++
+  ) {
 
-    const d = new Date(gridStart);
+    const d =
+      new Date(gridStart);
 
-    d.setDate(gridStart.getDate() + i);
+    d.setDate(
+      gridStart.getDate() + i
+    );
 
     cells.push(d);
 
@@ -492,21 +557,27 @@ function renderInteractiveMonth() {
 
 
   const headers =
-    weekdays.map(day =>
-      `<div class="calendarWeekday">${day}</div>`
-    ).join("");
+    weekdays
+      .map(day =>
+        `<div class="calendarWeekday">
+          ${day}
+        </div>`
+      )
+      .join("");
 
 
   const body =
     cells.map(day => {
 
-      const date = iso(day);
+      const date =
+        iso(day);
 
       const list =
         eventMap(date);
 
       const other =
-        day.getMonth() !== first.getMonth();
+        day.getMonth() !==
+        first.getMonth();
 
       const selected =
         date === selectedMonthDate;
@@ -535,20 +606,28 @@ function renderInteractiveMonth() {
           <div class="calendarEvents">
 
             ${
-              list.slice(0, 3).map(event =>
-                `
-                  <div
-                    class="calendarEventLine ${escapeHtml(event.category)}">
-                    ${escapeHtml(event.time)}
-                    ${escapeHtml(event.title)}
-                  </div>
-                `
-              ).join("")
+              list.slice(0, 3)
+                .map(event =>
+                  `
+                    <div
+                      class="calendarEventLine ${escapeHtml(event.category)}">
+
+                      ${escapeHtml(event.time)}
+                      ${escapeHtml(event.title)}
+
+                    </div>
+                  `
+                )
+                .join("")
             }
 
             ${
               list.length > 3
-                ? `<div class="meta">+${list.length - 3} altri</div>`
+                ? `
+                  <div class="meta">
+                    +${list.length - 3} altri
+                  </div>
+                `
                 : ""
             }
 
@@ -616,11 +695,18 @@ function renderCalendar() {
 
   const cells = [];
 
-  for (let i = 0; i < 42; i++) {
+  for (
+    let i = 0;
+    i < 42;
+    i++
+  ) {
 
-    const d = new Date(gridStart);
+    const d =
+      new Date(gridStart);
 
-    d.setDate(gridStart.getDate() + i);
+    d.setDate(
+      gridStart.getDate() + i
+    );
 
     cells.push(d);
 
@@ -639,21 +725,27 @@ function renderCalendar() {
 
 
   const headers =
-    weekdays.map(day =>
-      `<div class="calendarWeekday">${day}</div>`
-    ).join("");
+    weekdays
+      .map(day =>
+        `<div class="calendarWeekday">
+          ${day}
+        </div>`
+      )
+      .join("");
 
 
   const body =
     cells.map(day => {
 
-      const date = iso(day);
+      const date =
+        iso(day);
 
       const list =
         eventMap(date);
 
       const other =
-        day.getMonth() !== first.getMonth();
+        day.getMonth() !==
+        first.getMonth();
 
       const selected =
         date === selectedCalendarDate;
@@ -682,20 +774,28 @@ function renderCalendar() {
           <div class="calendarEvents">
 
             ${
-              list.slice(0, 3).map(event =>
-                `
-                  <div
-                    class="calendarEventLine ${escapeHtml(event.category)}">
-                    ${escapeHtml(event.time)}
-                    ${escapeHtml(event.title)}
-                  </div>
-                `
-              ).join("")
+              list.slice(0, 3)
+                .map(event =>
+                  `
+                    <div
+                      class="calendarEventLine ${escapeHtml(event.category)}">
+
+                      ${escapeHtml(event.time)}
+                      ${escapeHtml(event.title)}
+
+                    </div>
+                  `
+                )
+                .join("")
             }
 
             ${
               list.length > 3
-                ? `<div class="meta">+${list.length - 3} altri</div>`
+                ? `
+                  <div class="meta">
+                    +${list.length - 3} altri
+                  </div>
+                `
                 : ""
             }
 
@@ -756,72 +856,100 @@ function renderAll() {
 
 
 /* =========================================================
-   CAMBIO SEZIONE
+   CAMBIO SEZIONI
    ========================================================= */
 
-document.querySelectorAll(".tab").forEach(button => {
+document
+  .querySelectorAll(".tab")
+  .forEach(button => {
 
-  button.addEventListener("click", () => {
+    button.addEventListener(
+      "click",
+      () => {
 
-    document.querySelectorAll(".tab")
-      .forEach(tab =>
-        tab.classList.remove("active")
-      );
+        document
+          .querySelectorAll(".tab")
+          .forEach(tab =>
+            tab.classList.remove(
+              "active"
+            )
+          );
 
 
-    document.querySelectorAll(".view")
-      .forEach(view =>
-        view.classList.remove("active")
-      );
+        document
+          .querySelectorAll(".view")
+          .forEach(view =>
+            view.classList.remove(
+              "active"
+            )
+          );
 
 
-    button.classList.add("active");
+        button.classList.add(
+          "active"
+        );
 
-    const view =
-      $(button.dataset.view);
 
-    if (view) {
+        const view =
+          $(button.dataset.view);
 
-      view.classList.add("active");
 
-    }
+        if (view) {
 
-    /*
-      Ridisegniamo la vista quando viene aperta.
-      Questo evita che rimanga vuota dopo il caricamento.
-    */
+          view.classList.add(
+            "active"
+          );
 
-    if (button.dataset.view === "todayView") {
+        }
 
-      renderToday();
 
-    }
+        if (
+          button.dataset.view ===
+          "todayView"
+        ) {
 
-    if (button.dataset.view === "weekView") {
+          renderToday();
 
-      renderWeek();
+        }
 
-    }
 
-    if (button.dataset.view === "monthView") {
+        if (
+          button.dataset.view ===
+          "weekView"
+        ) {
 
-      renderInteractiveMonth();
+          renderWeek();
 
-    }
+        }
 
-    if (button.dataset.view === "calendarView") {
 
-      renderCalendar();
+        if (
+          button.dataset.view ===
+          "monthView"
+        ) {
 
-    }
+          renderInteractiveMonth();
+
+        }
+
+
+        if (
+          button.dataset.view ===
+          "calendarView"
+        ) {
+
+          renderCalendar();
+
+        }
+
+      }
+    );
 
   });
 
-});
-
 
 /* =========================================================
-   SETTIMANALE - SELEZIONE GIORNO
+   SETTIMANALE
    ========================================================= */
 
 $("weekPicker").addEventListener(
@@ -829,12 +957,16 @@ $("weekPicker").addEventListener(
   event => {
 
     const button =
-      event.target.closest(".dayChoice");
+      event.target.closest(
+        ".dayChoice"
+      );
 
     if (!button) return;
 
+
     selectedWeekDate =
       button.dataset.weekDate;
+
 
     renderWeek();
 
@@ -856,7 +988,7 @@ $("weekTodayBtn").addEventListener(
 
 
 /* =========================================================
-   MENSILE - SELEZIONE GIORNO
+   MENSILE
    ========================================================= */
 
 $("monthGrid").addEventListener(
@@ -864,24 +996,30 @@ $("monthGrid").addEventListener(
   event => {
 
     const button =
-      event.target.closest(".calendarDay");
+      event.target.closest(
+        ".calendarDay"
+      );
 
     if (!button) return;
+
 
     selectedMonthDate =
       button.dataset.monthDate;
 
-    const selected =
+
+    const date =
       new Date(
         `${selectedMonthDate}T12:00:00`
       );
 
+
     monthCursor =
       new Date(
-        selected.getFullYear(),
-        selected.getMonth(),
+        date.getFullYear(),
+        date.getMonth(),
         1
       );
+
 
     renderInteractiveMonth();
 
@@ -944,7 +1082,7 @@ $("monthTodayBtn").addEventListener(
 
 
 /* =========================================================
-   CALENDARIO - SELEZIONE GIORNO
+   CALENDARIO
    ========================================================= */
 
 $("calendarGrid").addEventListener(
@@ -952,24 +1090,30 @@ $("calendarGrid").addEventListener(
   event => {
 
     const button =
-      event.target.closest(".calendarDay");
+      event.target.closest(
+        ".calendarDay"
+      );
 
     if (!button) return;
+
 
     selectedCalendarDate =
       button.dataset.calendarDate;
 
-    const selected =
+
+    const date =
       new Date(
         `${selectedCalendarDate}T12:00:00`
       );
 
+
     calendarCursor =
       new Date(
-        selected.getFullYear(),
-        selected.getMonth(),
+        date.getFullYear(),
+        date.getMonth(),
         1
       );
+
 
     renderCalendar();
 
@@ -1037,25 +1181,36 @@ $("calendarTodayBtn").addEventListener(
 
 function openNewEvent() {
 
-  editingEventId = null;
+  editingEventId =
+    null;
+
 
   $("eventForm").reset();
+
 
   $("date").value =
     iso(today);
 
-  $("reminder").value = "30";
+
+  $("reminder").value =
+    "30";
+
 
   $("reminderType").value =
     "notification";
 
+
   $("modalTitle").textContent =
     "Nuovo impegno";
+
 
   $("saveEventBtn").textContent =
     "Salva impegno";
 
-  $("modal").classList.remove("hidden");
+
+  $("modal").classList.remove(
+    "hidden"
+  );
 
 }
 
@@ -1068,10 +1223,14 @@ function openEditEvent(id) {
 
   const event =
     events.find(
-      item => String(item.id) === String(id)
+      item =>
+        String(item.id) ===
+        String(id)
     );
 
+
   if (!event) return;
+
 
   editingEventId =
     event.id;
@@ -1096,7 +1255,8 @@ function openEditEvent(id) {
     event.reminder ?? "30";
 
   $("reminderType").value =
-    event.reminderType || "notification";
+    event.reminderType ||
+    "notification";
 
   $("notes").value =
     event.notes || "";
@@ -1105,50 +1265,69 @@ function openEditEvent(id) {
   $("modalTitle").textContent =
     "Modifica impegno";
 
+
   $("saveEventBtn").textContent =
     "Salva modifiche";
 
 
-  $("modal").classList.remove("hidden");
+  $("modal").classList.remove(
+    "hidden"
+  );
 
 }
 
 
 /* =========================================================
-   ELIMINAZIONE
+   ELIMINA
    ========================================================= */
 
 function deleteEvent(id) {
 
   const event =
     events.find(
-      item => String(item.id) === String(id)
+      item =>
+        String(item.id) ===
+        String(id)
     );
+
 
   if (!event) return;
 
 
-  const confirmed =
-    confirm(
+  if (
+    !confirm(
       `Vuoi eliminare l'attività "${event.title}"?`
-    );
+    )
+  ) {
 
-
-  if (!confirmed) return;
-
-
-  if (reminderTimers.has(event.id)) {
-
-    clearTimeout(
-      reminderTimers.get(event.id)
-    );
-
-    reminderTimers.delete(event.id);
+    return;
 
   }
 
 
-  if (activeAlarmId === event.id) {
+  if (
+    reminderTimers.has(
+      event.id
+    )
+  ) {
+
+    clearTimeout(
+      reminderTimers.get(
+        event.id
+      )
+    );
+
+    reminderTimers.delete(
+      event.id
+    );
+
+  }
+
+
+  if (
+    activeAlarmId ===
+    event.id
+  ) {
 
     stopAlarm();
 
@@ -1157,7 +1336,9 @@ function deleteEvent(id) {
 
   events =
     events.filter(
-      item => String(item.id) !== String(id)
+      item =>
+        String(item.id) !==
+        String(id)
     );
 
 
@@ -1169,7 +1350,7 @@ function deleteEvent(id) {
 
 
 /* =========================================================
-   APERTURA MODALE
+   APERTURA NUOVO
    ========================================================= */
 
 $("addBtn").addEventListener(
@@ -1184,13 +1365,20 @@ $("addBtn").addEventListener(
 );
 
 
+/* =========================================================
+   CHIUSURA MODALE
+   ========================================================= */
+
 $("closeBtn").addEventListener(
   "click",
   () => {
 
-    editingEventId = null;
+    editingEventId =
+      null;
 
-    $("modal").classList.add("hidden");
+    $("modal").classList.add(
+      "hidden"
+    );
 
   }
 );
@@ -1200,11 +1388,17 @@ $("modal").addEventListener(
   "click",
   event => {
 
-    if (event.target.id === "modal") {
+    if (
+      event.target.id ===
+      "modal"
+    ) {
 
-      editingEventId = null;
+      editingEventId =
+        null;
 
-      $("modal").classList.add("hidden");
+      $("modal").classList.add(
+        "hidden"
+      );
 
     }
 
@@ -1264,7 +1458,9 @@ $("eventForm").addEventListener(
 
     /* MODIFICA */
 
-    if (editingEventId !== null) {
+    if (
+      editingEventId !== null
+    ) {
 
       const index =
         events.findIndex(
@@ -1331,36 +1527,50 @@ $("eventForm").addEventListener(
       };
 
 
-      events.push(newEvent);
+      events.push(
+        newEvent
+      );
+
 
       saveEvents();
 
-      scheduleReminder(newEvent);
+      scheduleReminder(
+        newEvent
+      );
 
     }
 
 
-    editingEventId = null;
+    editingEventId =
+      null;
 
 
     $("eventForm").reset();
 
+
     $("date").value =
       iso(today);
+
 
     $("reminder").value =
       "30";
 
+
     $("reminderType").value =
       "notification";
+
 
     $("modalTitle").textContent =
       "Nuovo impegno";
 
+
     $("saveEventBtn").textContent =
       "Salva impegno";
 
-    $("modal").classList.add("hidden");
+
+    $("modal").classList.add(
+      "hidden"
+    );
 
 
     renderAll();
@@ -1377,17 +1587,18 @@ document.addEventListener(
   "click",
   event => {
 
-    const edit =
+    const editButton =
       event.target.closest(
         ".editEventBtn"
       );
 
-    if (edit) {
+
+    if (editButton) {
 
       event.preventDefault();
 
       openEditEvent(
-        edit.dataset.id
+        editButton.dataset.id
       );
 
       return;
@@ -1395,17 +1606,18 @@ document.addEventListener(
     }
 
 
-    const remove =
+    const deleteButton =
       event.target.closest(
         ".deleteEventBtn"
       );
 
-    if (remove) {
+
+    if (deleteButton) {
 
       event.preventDefault();
 
       deleteEvent(
-        remove.dataset.id
+        deleteButton.dataset.id
       );
 
     }
@@ -1415,7 +1627,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   NOTIFICHE
+   PERMESSO NOTIFICHE
    ========================================================= */
 
 async function requestNotificationPermission() {
@@ -1465,42 +1677,38 @@ async function requestNotificationPermission() {
 
 
 /* =========================================================
-   PUSH - PREPARAZIONE
+   PUSH SUBSCRIPTION
    ========================================================= */
 
-/*
-  IMPORTANTE:
-
-  La vera sottoscrizione Push richiederà la chiave
-  pubblica VAPID del nostro server.
-
-  Per ora lasciamo il valore vuoto.
-
-  Quando creeremo il backend inseriremo qui
-  la chiave pubblica.
-*/
-
-const VAPID_PUBLIC_KEY = "";
-
-
-function urlBase64ToUint8Array(base64String) {
+function urlBase64ToUint8Array(
+  base64String
+) {
 
   const padding =
     "=".repeat(
-      (4 - base64String.length % 4) % 4
+      (4 -
+        base64String.length % 4) %
+        4
     );
 
+
   const base64 =
-    (base64String + padding)
+    (
+      base64String +
+      padding
+    )
       .replace(/-/g, "+")
       .replace(/_/g, "/");
+
 
   const rawData =
     window.atob(base64);
 
+
   return Uint8Array.from(
     [...rawData].map(
-      char => char.charCodeAt(0)
+      char =>
+        char.charCodeAt(0)
     )
   );
 
@@ -1517,7 +1725,18 @@ async function enablePushNotifications() {
 
 
   if (
-    !("serviceWorker" in navigator) ||
+    !("serviceWorker" in navigator)
+  ) {
+
+    status.textContent =
+      "Il Service Worker non è disponibile.";
+
+    return false;
+
+  }
+
+
+  if (
     !("PushManager" in window)
   ) {
 
@@ -1529,10 +1748,22 @@ async function enablePushNotifications() {
   }
 
 
+  if (
+    !("Notification" in window)
+  ) {
+
+    status.textContent =
+      "Le notifiche non sono supportate.";
+
+    return false;
+
+  }
+
+
   if (!VAPID_PUBLIC_KEY) {
 
     status.textContent =
-      "Le notifiche Push saranno attivate dopo il collegamento al server.";
+      "Il sistema Push è predisposto. Completeremo l'attivazione collegando il server.";
 
     return false;
 
@@ -1555,7 +1786,8 @@ async function enablePushNotifications() {
 
   try {
 
-    button.disabled = true;
+    button.disabled =
+      true;
 
     button.textContent =
       "Attivazione...";
@@ -1566,7 +1798,8 @@ async function enablePushNotifications() {
 
 
     let subscription =
-      await registration.pushManager.getSubscription();
+      await registration.pushManager
+        .getSubscription();
 
 
     if (!subscription) {
@@ -1574,7 +1807,8 @@ async function enablePushNotifications() {
       subscription =
         await registration.pushManager.subscribe({
 
-          userVisibleOnly: true,
+          userVisibleOnly:
+            true,
 
           applicationServerKey:
             urlBase64ToUint8Array(
@@ -1586,19 +1820,41 @@ async function enablePushNotifications() {
     }
 
 
-    /*
-      Nel prossimo passaggio questa subscription
-      verrà inviata al nostro server.
-    */
-
     localStorage.setItem(
       "agenda_push_subscription",
-      JSON.stringify(subscription)
+      JSON.stringify(
+        subscription
+      )
     );
 
 
+    if (PUSH_SERVER_URL) {
+
+      await fetch(
+        `${PUSH_SERVER_URL}/subscribe`,
+        {
+
+          method:
+            "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+              subscription
+            })
+
+        }
+      );
+
+    }
+
+
     status.textContent =
-      "Notifiche Push abilitate su questo dispositivo.";
+      "✓ Notifiche Push abilitate.";
 
     button.textContent =
       "✓ Notifiche abilitate";
@@ -1613,13 +1869,17 @@ async function enablePushNotifications() {
       error
     );
 
+
     status.textContent =
       "Impossibile attivare le notifiche Push.";
 
-    button.disabled = false;
+
+    button.disabled =
+      false;
 
     button.textContent =
       "Abilita notifiche Push";
+
 
     return false;
 
@@ -1628,6 +1888,10 @@ async function enablePushNotifications() {
 }
 
 
+/* =========================================================
+   PULSANTE PUSH
+   ========================================================= */
+
 $("enablePushBtn").addEventListener(
   "click",
   enablePushNotifications
@@ -1635,13 +1899,18 @@ $("enablePushBtn").addEventListener(
 
 
 /* =========================================================
-   PROMEMORIA LOCALI
+   CALCOLO ORARIO PROMEMORIA
    ========================================================= */
 
 function reminderAt(event) {
 
-  if (!event.time || !event.date) {
+  if (
+    !event.date ||
+    !event.time
+  ) {
+
     return 0;
+
   }
 
 
@@ -1656,9 +1925,18 @@ function reminderAt(event) {
 
   const date =
     new Date(
-      Number(event.date.slice(0, 4)),
-      Number(event.date.slice(5, 7)) - 1,
-      Number(event.date.slice(8, 10)),
+      Number(
+        event.date.slice(0, 4)
+      ),
+
+      Number(
+        event.date.slice(5, 7)
+      ) - 1,
+
+      Number(
+        event.date.slice(8, 10)
+      ),
+
       hours,
       minutes,
       0,
@@ -1668,21 +1946,31 @@ function reminderAt(event) {
 
   return (
     date.getTime() -
-    Number(event.reminder || 0) *
+    Number(
+      event.reminder || 0
+    ) *
       60000
   );
 
 }
 
 
+/* =========================================================
+   TIMER LOCALE
+   ========================================================= */
+
 function scheduleReminder(event) {
 
   if (
-    reminderTimers.has(event.id)
+    reminderTimers.has(
+      event.id
+    )
   ) {
 
     clearTimeout(
-      reminderTimers.get(event.id)
+      reminderTimers.get(
+        event.id
+      )
     );
 
     reminderTimers.delete(
@@ -1692,32 +1980,27 @@ function scheduleReminder(event) {
   }
 
 
-  /*
-    Il timer locale rimane come fallback.
-
-    Il Push vero verrà gestito dal server
-    quando completeremo la configurazione.
-  */
-
   const when =
     reminderAt(event);
+
 
   const delay =
     when - Date.now();
 
 
   if (delay <= 0) {
+
     return;
+
   }
 
 
   /*
-    setTimeout ha un limite:
-    funziona bene con la PWA attiva,
-    ma NON è sufficiente per garantire
-    il promemoria con app completamente chiusa.
+    Questo timer rimane come fallback
+    mentre completiamo il sistema Push.
 
-    Per questo stiamo aggiungendo il Push.
+    Il Push vero permetterà di ricevere
+    il promemoria anche con PWA chiusa.
   */
 
   const timer =
@@ -1738,8 +2021,10 @@ function scheduleReminder(event) {
 function scheduleAllReminders() {
 
   reminderTimers.forEach(
-    timer => clearTimeout(timer)
+    timer =>
+      clearTimeout(timer)
   );
+
 
   reminderTimers.clear();
 
@@ -1752,7 +2037,7 @@ function scheduleAllReminders() {
 
 
 /* =========================================================
-   PROMEMORIA LOCALE
+   PROMEMORIA
    ========================================================= */
 
 async function fireReminder(event) {
@@ -1775,7 +2060,9 @@ async function fireReminder(event) {
 
   if (!granted) {
 
-    showInAppMessage(event);
+    showInAppMessage(
+      event
+    );
 
     return;
 
@@ -1807,11 +2094,10 @@ async function fireReminder(event) {
         requireInteraction:
           true,
 
-        data:
-          {
-            eventId:
-              event.id
-          }
+        data: {
+          eventId:
+            event.id
+        }
 
       }
     );
@@ -1824,12 +2110,19 @@ async function fireReminder(event) {
       error
     );
 
-    showInAppMessage(event);
+
+    showInAppMessage(
+      event
+    );
 
   }
 
 }
 
+
+/* =========================================================
+   FALLBACK ALLARME
+   ========================================================= */
 
 function showInAppMessage(event) {
 
@@ -1894,7 +2187,14 @@ function startAlarm(
       .catch(() => {});
 
 
-  } catch {}
+  } catch (error) {
+
+    console.error(
+      "Errore audio:",
+      error
+    );
+
+  }
 
 }
 
@@ -1956,6 +2256,7 @@ async function registerServiceWorker() {
 
     await navigator.serviceWorker.ready;
 
+
     return registration;
 
   } catch (error) {
@@ -1973,7 +2274,7 @@ async function registerServiceWorker() {
 
 
 /* =========================================================
-   VISIBILITÀ
+   RICARICAMENTO DATI
    ========================================================= */
 
 document.addEventListener(
@@ -1981,12 +2282,6 @@ document.addEventListener(
   () => {
 
     if (!document.hidden) {
-
-      /*
-        Ricarichiamo sempre i dati dal localStorage.
-        Questo evita che la memoria JavaScript
-        rimanga diversa da quella persistente.
-      */
 
       loadEvents();
 
@@ -2015,7 +2310,7 @@ window.addEventListener(
 
 
 /* =========================================================
-   AVVIO APP
+   AVVIO
    ========================================================= */
 
 async function initApp() {
@@ -2042,11 +2337,12 @@ async function initApp() {
 
   scheduleAllReminders();
 
+
   await registerServiceWorker();
 
 }
 
 
-/* Avvio */
+/* Avvio applicazione */
 
 initApp();
