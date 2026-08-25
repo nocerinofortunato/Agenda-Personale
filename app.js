@@ -40,8 +40,6 @@ let calendarCursor=new Date(
 
 let selectedCalendarDate=iso(today);
 
-let selectedMonthDate=iso(today);
-
 /* =========================================================
    INIZIALIZZAZIONE
    ========================================================= */
@@ -226,7 +224,7 @@ function renderToday(){
 }
 
 /* =========================================================
-   SETTIMANA
+   SETTIMANALE
    ========================================================= */
 
 function renderWeek(){
@@ -349,170 +347,6 @@ function renderWeek(){
 }
 
 /* =========================================================
-   MENSILE
-   ========================================================= */
-
-function renderMonth(){
-
-  const first=startOfMonth(today);
-
-  const gridStart=startOfWeek(first);
-
-  const cells=[];
-
-  for(let i=0;i<42;i++){
-
-    const d=new Date(gridStart);
-
-    d.setDate(
-      gridStart.getDate()+i
-    );
-
-    cells.push(d);
-  }
-
-  $("monthLabel").textContent=
-    first.toLocaleDateString(
-      "it-IT",
-      {
-        month:"long",
-        year:"numeric"
-      }
-    );
-
-  const heads=[
-    "Lun",
-    "Mar",
-    "Mer",
-    "Gio",
-    "Ven",
-    "Sab",
-    "Dom"
-  ]
-  .map(
-    x=>`<div class="weekdayHead">${x}</div>`
-  )
-  .join("");
-
-  const body=cells.map(d=>{
-
-    const ds=iso(d);
-
-    const arr=eventMap(ds);
-
-    const other=
-      d.getMonth()!==first.getMonth();
-
-    const isToday=
-      ds===iso(today);
-
-    const selected=
-      ds===selectedMonthDate;
-
-    return `
-      <button
-        type="button"
-        class="monthCell ${
-          other?"other":""
-        } ${
-          isToday?"today":""
-        } ${
-          selected?"selected":""
-        }"
-        data-month-date="${ds}"
-      >
-
-        <div class="monthNumber">
-          ${d.getDate()}
-        </div>
-
-        ${
-          arr
-          .slice(0,4)
-          .map(e=>
-            `
-              <div class="monthEvent ${e.category}">
-                <span>
-                  ${e.time}
-                  ${escapeHtml(e.title)}
-                </span>
-              </div>
-            `
-          )
-          .join("")
-        }
-
-        ${
-          arr.length>4
-          ?`
-            <div class="meta">
-              +${arr.length-4} altri
-            </div>
-          `
-          :""
-        }
-
-      </button>
-    `;
-
-  }).join("");
-
-  $("monthList").innerHTML=
-    heads+body;
-
-  renderMonthSelected();
-}
-
-function renderMonthSelected(){
-
-  let box=$("monthSelectedBox");
-
-  if(!box){
-
-    box=document.createElement("div");
-
-    box.id="monthSelectedBox";
-    box.className="selectedDayTitle";
-
-    $("monthList")
-      .insertAdjacentElement(
-        "afterend",
-        box
-      );
-  }
-
-  const date=
-    new Date(
-      selectedMonthDate+"T12:00:00"
-    );
-
-  box.innerHTML=`
-    <h3>
-      ${date.toLocaleDateString(
-        "it-IT",
-        {
-          weekday:"long",
-          day:"numeric",
-          month:"long",
-          year:"numeric"
-        }
-      )}
-    </h3>
-
-    <p class="muted">
-      Impegni del giorno selezionato
-    </p>
-
-    <div id="monthDayList" class="list"></div>
-  `;
-
-  render(
-    $("monthDayList"),
-    selectedMonthDate
-  );
-}
-
-/* =========================================================
    CALENDARIO
    ========================================================= */
 
@@ -618,7 +452,7 @@ function renderCalendar(){
             arr.length>3
             ?`
               <div class="meta">
-                +${arr.length-3}
+                +${arr.length-3} altri
               </div>
             `
             :""
@@ -666,8 +500,6 @@ function renderAll(){
 
   renderWeek();
 
-  renderMonth();
-
   renderCalendar();
 }
 
@@ -697,6 +529,26 @@ document
 
       $(btn.dataset.view)
         .classList.add("active");
+
+      /* Quando si apre Calendario,
+         torna automaticamente al mese corrente
+         e seleziona oggi. */
+
+      if(btn.dataset.view==="calendarView"){
+
+        calendarCursor=
+          new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            1
+          );
+
+        selectedCalendarDate=
+          iso(today);
+
+        renderCalendar();
+      }
+
     };
 
   });
@@ -728,26 +580,6 @@ $("weekTodayBtn").onclick=()=>{
 
   renderWeek();
 };
-
-/* =========================================================
-   MENSILE CLICK
-   ========================================================= */
-
-$("monthList").addEventListener(
-  "click",
-  e=>{
-
-    const btn=
-      e.target.closest(".monthCell");
-
-    if(!btn)return;
-
-    selectedMonthDate=
-      btn.dataset.monthDate;
-
-    renderMonth();
-  }
-);
 
 /* =========================================================
    CALENDARIO CLICK
@@ -782,6 +614,10 @@ $("calendarGrid").addEventListener(
   }
 );
 
+/* =========================================================
+   CAMBIO MESE
+   ========================================================= */
+
 $("prevMonthBtn").onclick=()=>{
 
   calendarCursor=
@@ -805,6 +641,10 @@ $("nextMonthBtn").onclick=()=>{
 
   renderCalendar();
 };
+
+/* =========================================================
+   TORNA A OGGI
+   ========================================================= */
 
 $("calendarTodayBtn").onclick=()=>{
 
