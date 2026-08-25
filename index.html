@@ -26,11 +26,21 @@
 <main>
 
   <section class="tabs">
-    <button class="tab active" data-view="todayView">Oggi</button>
-    <button class="tab" data-view="weekView">Settimanale</button>
-    <button class="tab" data-view="monthView">Mensile</button>
-    <button class="tab" data-view="calendarView">Calendario</button>
-    <button class="tab" data-view="tasksView">Attività</button>
+    <button class="tab active" data-view="todayView">
+      Oggi
+    </button>
+
+    <button class="tab" data-view="weekView">
+      Settimanale
+    </button>
+
+    <button class="tab" data-view="calendarView">
+      Calendario
+    </button>
+
+    <button class="tab" data-view="tasksView">
+      Attività
+    </button>
   </section>
 
 
@@ -39,6 +49,7 @@
   <section id="todayView" class="view active">
 
     <div class="summary">
+
       <div>
         <strong id="eventCount">0</strong>
         <span>Impegni oggi</span>
@@ -48,6 +59,7 @@
         <strong id="taskCount">0</strong>
         <span>Attività</span>
       </div>
+
     </div>
 
     <div id="todayList" class="list"></div>
@@ -66,75 +78,32 @@
         <p id="weekLabel" class="muted"></p>
       </div>
 
-      <button id="weekTodayBtn"
-              class="smallBtn"
-              type="button">
+      <button
+        id="weekTodayBtn"
+        class="smallBtn"
+        type="button">
         Oggi
       </button>
 
     </div>
 
-    <div id="weekPicker"
-         class="dayPicker"
-         aria-label="Giorni della settimana">
+    <div
+      id="weekPicker"
+      class="dayPicker"
+      aria-label="Giorni della settimana">
     </div>
 
     <div class="selectedDayTitle">
+
       <h3 id="weekSelectedLabel"></h3>
+
       <p class="muted">
         Impegni del giorno selezionato
       </p>
+
     </div>
 
     <div id="weekDayList" class="list"></div>
-
-  </section>
-
-
-  <!-- ================= MENSILE ================= -->
-
-  <section id="monthView" class="view">
-
-    <div class="calendarHeader">
-
-      <button id="monthPrevBtn"
-              class="navBtn"
-              type="button"
-              aria-label="Mese precedente">
-        ‹
-      </button>
-
-      <div>
-        <h2 id="monthTitle"></h2>
-
-        <button id="monthTodayBtn"
-                class="todayBtn"
-                type="button">
-          Oggi
-        </button>
-      </div>
-
-      <button id="monthNextBtn"
-              class="navBtn"
-              type="button"
-              aria-label="Mese successivo">
-        ›
-      </button>
-
-    </div>
-
-    <div id="monthGrid"
-         class="calendarGrid">
-    </div>
-
-    <div class="selectedDayTitle">
-      <h3 id="monthSelectedLabel"></h3>
-      <p class="muted">
-        Impegni del giorno selezionato
-      </p>
-    </div>
-
-    <div id="monthDayList" class="list"></div>
 
   </section>
 
@@ -145,41 +114,50 @@
 
     <div class="calendarHeader">
 
-      <button id="prevMonthBtn"
-              class="navBtn"
-              type="button"
-              aria-label="Mese precedente">
+      <button
+        id="prevMonthBtn"
+        class="navBtn"
+        type="button"
+        aria-label="Mese precedente">
         ‹
       </button>
 
       <div>
+
         <h2 id="calendarTitle"></h2>
 
-        <button id="calendarTodayBtn"
-                class="todayBtn"
-                type="button">
+        <button
+          id="calendarTodayBtn"
+          class="todayBtn"
+          type="button">
           Oggi
         </button>
+
       </div>
 
-      <button id="nextMonthBtn"
-              class="navBtn"
-              type="button"
-              aria-label="Mese successivo">
+      <button
+        id="nextMonthBtn"
+        class="navBtn"
+        type="button"
+        aria-label="Mese successivo">
         ›
       </button>
 
     </div>
 
-    <div id="calendarGrid"
-         class="calendarGrid">
+    <div
+      id="calendarGrid"
+      class="calendarGrid">
     </div>
 
     <div class="selectedDayTitle">
+
       <h3 id="calendarSelectedLabel"></h3>
+
       <p class="muted">
         Impegni del giorno selezionato
       </p>
+
     </div>
 
     <div id="dateList" class="list"></div>
@@ -219,8 +197,9 @@
         Nuovo impegno
       </h2>
 
-      <button id="closeBtn"
-              type="button">
+      <button
+        id="closeBtn"
+        type="button">
         ✕
       </button>
 
@@ -232,18 +211,20 @@
       <label>
         Titolo
 
-        <input id="title"
-               required
-               placeholder="Es. Riunione">
+        <input
+          id="title"
+          required
+          placeholder="Es. Riunione">
       </label>
 
 
       <label>
         Descrizione
 
-        <textarea id="description"
-                  rows="3"
-                  placeholder="Di cosa si tratta?"></textarea>
+        <textarea
+          id="description"
+          rows="3"
+          placeholder="Di cosa si tratta?"></textarea>
       </label>
 
 
@@ -252,18 +233,20 @@
         <label>
           Data
 
-          <input id="date"
-                 type="date"
-                 required>
+          <input
+            id="date"
+            type="date"
+            required>
         </label>
 
 
         <label>
           Ora
 
-          <input id="time"
-                 type="time"
-                 required>
+          <input
+            id="time"
+            type="time"
+            required>
         </label>
 
       </div>
@@ -320,7 +303,9 @@
 
         <select id="reminderType">
 
-          <option value="notification" selected>
+          <option
+            value="notification"
+            selected>
             🔔 Notifica Push
           </option>
 
@@ -342,9 +327,10 @@
           abilita le notifiche Push.
         </p>
 
-        <button id="enablePushBtn"
-                class="smallBtn"
-                type="button">
+        <button
+          id="enablePushBtn"
+          class="smallBtn"
+          type="button">
           Abilita notifiche Push
         </button>
 
@@ -360,15 +346,17 @@
       <label>
         Note
 
-        <textarea id="notes"
-                  rows="3"
-                  placeholder="Note opzionali"></textarea>
+        <textarea
+          id="notes"
+          rows="3"
+          placeholder="Note opzionali"></textarea>
       </label>
 
 
-      <button id="saveEventBtn"
-              class="primary full"
-              type="submit">
+      <button
+        id="saveEventBtn"
+        class="primary full"
+        type="submit">
         Salva impegno
       </button>
 
@@ -381,8 +369,9 @@
 
 <!-- ================= ALLARME ================= -->
 
-<div id="alarmModal"
-     class="alarmModal hidden">
+<div
+  id="alarmModal"
+  class="alarmModal hidden">
 
   <div class="alarmBox">
 
@@ -400,9 +389,10 @@
 
     <p id="alarmInfo"></p>
 
-    <button id="stopAlarmBtn"
-            class="stopAlarm"
-            type="button">
+    <button
+      id="stopAlarmBtn"
+      class="stopAlarm"
+      type="button">
       STOP ALLARME
     </button>
 
