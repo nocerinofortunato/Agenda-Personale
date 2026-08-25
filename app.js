@@ -18,7 +18,6 @@ const VAPID_PUBLIC_KEY=
 let serviceWorkerRegistration=null;
 let pushSubscription=null;
 
-
 /* =========================================================
    DATI AGENDA
    ========================================================= */
@@ -41,6 +40,7 @@ let calendarCursor=new Date(
 
 let selectedCalendarDate=iso(today);
 
+let selectedMonthDate=iso(today);
 
 /* =========================================================
    INIZIALIZZAZIONE
@@ -59,7 +59,6 @@ $("date").value=iso(today);
 
 $("calendarDate")?.remove();
 
-
 /* =========================================================
    STORAGE
    ========================================================= */
@@ -71,13 +70,11 @@ function save(){
   );
 }
 
-
 /* =========================================================
    SICUREZZA HTML
    ========================================================= */
 
 function escapeHtml(s){
-
   return String(s).replace(
     /[&<>"']/g,
     c=>({
@@ -88,16 +85,13 @@ function escapeHtml(s){
       "'":"&#039;"
     }[c])
   );
-
 }
-
 
 /* =========================================================
    REMINDER
    ========================================================= */
 
 function reminderText(v){
-
   return v==="0"
     ?"all'orario"
     :v==="10"
@@ -107,21 +101,16 @@ function reminderText(v){
     :v==="60"
     ?"1 ora prima"
     :"1 giorno prima";
-
 }
 
-
 function eventMap(dateStr){
-
   return events
     .filter(e=>e.date===dateStr)
     .sort(
       (a,b)=>
         (a.time||"").localeCompare(b.time||"")
     );
-
 }
-
 
 /* =========================================================
    RENDER EVENTI
@@ -133,55 +122,35 @@ function render(listEl,date){
 
   listEl.innerHTML=arr.length
     ?arr.map(e=>`
-
       <article class="event ${e.category}">
 
         <div class="eventTop">
-
-          <div class="time">
-            ${e.time}
-          </div>
-
-          <span class="badge">
-            ${e.category}
-          </span>
-
+          <div class="time">${e.time}</div>
+          <span class="badge">${e.category}</span>
         </div>
 
-        <h3>
-          ${escapeHtml(e.title)}
-        </h3>
+        <h3>${escapeHtml(e.title)}</h3>
 
-        ${
-          e.description
-          ?`
-            <div class="meta">
-              <strong>Descrizione:</strong>
-              ${escapeHtml(e.description)}
-            </div>
-          `
-          :""
-        }
+        ${e.description?`
+          <div class="meta">
+            <strong>Descrizione:</strong>
+            ${escapeHtml(e.description)}
+          </div>
+        `:""}
 
-        ${
-          e.notes
-          ?`
-            <div class="meta">
-              <strong>Note:</strong>
-              ${escapeHtml(e.notes)}
-            </div>
-          `
-          :""
-        }
+        ${e.notes?`
+          <div class="meta">
+            <strong>Note:</strong>
+            ${escapeHtml(e.notes)}
+          </div>
+        `:""}
 
         <div class="meta">
           🔔 ${reminderText(e.reminder)}
           ·
-          ${
-            e.reminderType==="alarm"
+          ${e.reminderType==="alarm"
             ?"⏰ Allarme"
-            :"Notifica"
-          }
+            :"Notifica"}
         </div>
 
         <div class="eventActions">
@@ -205,7 +174,6 @@ function render(listEl,date){
         </div>
 
       </article>
-
     `).join("")
     :`
       <div class="empty">
@@ -214,12 +182,10 @@ function render(listEl,date){
     `;
 
   return arr.length;
-
 }
 
-
 /* =========================================================
-   SETTIMANA
+   DATE
    ========================================================= */
 
 function startOfWeek(d){
@@ -233,27 +199,15 @@ function startOfWeek(d){
   x.setHours(0,0,0,0);
 
   return x;
-
 }
 
-
 function startOfMonth(d){
-
   return new Date(
     d.getFullYear(),
     d.getMonth(),
     1
   );
-
 }
-
-
-function localIso(d){
-
-  return iso(d);
-
-}
-
 
 /* =========================================================
    OGGI
@@ -269,9 +223,7 @@ function renderToday(){
   $("eventCount").textContent=n;
 
   $("taskCount").textContent="0";
-
 }
-
 
 /* =========================================================
    SETTIMANA
@@ -292,7 +244,6 @@ function renderWeek(){
     );
 
     days.push(d);
-
   }
 
   const end=days[6];
@@ -338,7 +289,6 @@ function renderWeek(){
       ).replace(".","");
 
     return `
-
       <button
         type="button"
         class="dayChoice ${
@@ -349,23 +299,16 @@ function renderWeek(){
         data-week-date="${ds}"
       >
 
-        <div class="dow">
-          ${dow}
-        </div>
+        <div class="dow">${dow}</div>
 
-        <div class="num">
-          ${d.getDate()}
-        </div>
+        <div class="num">${d.getDate()}</div>
 
-        <div class="mon">
-          ${mon}
-        </div>
+        <div class="mon">${mon}</div>
 
         ${
           arr.length
           ?`
             <div class="eventDots">
-
               ${arr
                 .slice(0,3)
                 .map(e=>
@@ -373,14 +316,12 @@ function renderWeek(){
                 )
                 .join("")
               }
-
             </div>
           `
           :""
         }
 
       </button>
-
     `;
 
   }).join("");
@@ -405,35 +346,17 @@ function renderWeek(){
     $("weekDayList"),
     selectedWeekDate
   );
-
-  const selectedBtn=
-    document.querySelector(
-      `.dayChoice[data-week-date="${selectedWeekDate}"]`
-    );
-
-  if(selectedBtn){
-
-    selectedBtn.scrollIntoView({
-      behavior:"smooth",
-      block:"nearest",
-      inline:"center"
-    });
-
-  }
-
 }
 
-
 /* =========================================================
-   MESE
+   MENSILE
    ========================================================= */
 
 function renderMonth(){
 
   const first=startOfMonth(today);
 
-  const gridStart=
-    startOfWeek(first);
+  const gridStart=startOfWeek(first);
 
   const cells=[];
 
@@ -446,7 +369,6 @@ function renderMonth(){
     );
 
     cells.push(d);
-
   }
 
   $("monthLabel").textContent=
@@ -484,13 +406,21 @@ function renderMonth(){
     const isToday=
       ds===iso(today);
 
-    return `
+    const selected=
+      ds===selectedMonthDate;
 
-      <div class="monthCell ${
-        other?"other":""
-      } ${
-        isToday?"today":""
-      }">
+    return `
+      <button
+        type="button"
+        class="monthCell ${
+          other?"other":""
+        } ${
+          isToday?"today":""
+        } ${
+          selected?"selected":""
+        }"
+        data-month-date="${ds}"
+      >
 
         <div class="monthNumber">
           ${d.getDate()}
@@ -522,8 +452,7 @@ function renderMonth(){
           :""
         }
 
-      </div>
-
+      </button>
     `;
 
   }).join("");
@@ -531,8 +460,57 @@ function renderMonth(){
   $("monthList").innerHTML=
     heads+body;
 
+  renderMonthSelected();
 }
 
+function renderMonthSelected(){
+
+  let box=$("monthSelectedBox");
+
+  if(!box){
+
+    box=document.createElement("div");
+
+    box.id="monthSelectedBox";
+    box.className="selectedDayTitle";
+
+    $("monthList")
+      .insertAdjacentElement(
+        "afterend",
+        box
+      );
+  }
+
+  const date=
+    new Date(
+      selectedMonthDate+"T12:00:00"
+    );
+
+  box.innerHTML=`
+    <h3>
+      ${date.toLocaleDateString(
+        "it-IT",
+        {
+          weekday:"long",
+          day:"numeric",
+          month:"long",
+          year:"numeric"
+        }
+      )}
+    </h3>
+
+    <p class="muted">
+      Impegni del giorno selezionato
+    </p>
+
+    <div id="monthDayList" class="list"></div>
+  `;
+
+  render(
+    $("monthDayList"),
+    selectedMonthDate
+  );
+}
 
 /* =========================================================
    CALENDARIO
@@ -566,7 +544,6 @@ function renderCalendar(){
     );
 
     cells.push(d);
-
   }
 
   const heads=[
@@ -603,7 +580,6 @@ function renderCalendar(){
       ds===iso(today);
 
     return `
-
       <button
         type="button"
         class="calendarDay ${
@@ -651,7 +627,6 @@ function renderCalendar(){
         </div>
 
       </button>
-
     `;
 
   }).join("");
@@ -679,9 +654,7 @@ function renderCalendar(){
     $("dateList"),
     selectedCalendarDate
   );
-
 }
-
 
 /* =========================================================
    RENDER COMPLETO
@@ -696,9 +669,7 @@ function renderAll(){
   renderMonth();
 
   renderCalendar();
-
 }
-
 
 /* =========================================================
    TABS
@@ -726,14 +697,12 @@ document
 
       $(btn.dataset.view)
         .classList.add("active");
-
     };
 
   });
 
-
 /* =========================================================
-   WEEK PICKER
+   SETTIMANA CLICK
    ========================================================= */
 
 $("weekPicker").addEventListener(
@@ -749,10 +718,8 @@ $("weekPicker").addEventListener(
       btn.dataset.weekDate;
 
     renderWeek();
-
   }
 );
-
 
 $("weekTodayBtn").onclick=()=>{
 
@@ -760,9 +727,27 @@ $("weekTodayBtn").onclick=()=>{
     iso(today);
 
   renderWeek();
-
 };
 
+/* =========================================================
+   MENSILE CLICK
+   ========================================================= */
+
+$("monthList").addEventListener(
+  "click",
+  e=>{
+
+    const btn=
+      e.target.closest(".monthCell");
+
+    if(!btn)return;
+
+    selectedMonthDate=
+      btn.dataset.monthDate;
+
+    renderMonth();
+  }
+);
 
 /* =========================================================
    CALENDARIO CLICK
@@ -794,10 +779,8 @@ $("calendarGrid").addEventListener(
       );
 
     renderCalendar();
-
   }
 );
-
 
 $("prevMonthBtn").onclick=()=>{
 
@@ -809,9 +792,7 @@ $("prevMonthBtn").onclick=()=>{
     );
 
   renderCalendar();
-
 };
-
 
 $("nextMonthBtn").onclick=()=>{
 
@@ -823,9 +804,7 @@ $("nextMonthBtn").onclick=()=>{
     );
 
   renderCalendar();
-
 };
-
 
 $("calendarTodayBtn").onclick=()=>{
 
@@ -840,9 +819,7 @@ $("calendarTodayBtn").onclick=()=>{
     iso(today);
 
   renderCalendar();
-
 };
-
 
 /* =========================================================
    SERVICE WORKER
@@ -857,7 +834,6 @@ async function getServiceWorker(){
     );
 
     return null;
-
   }
 
   try{
@@ -868,7 +844,6 @@ async function getServiceWorker(){
         await navigator.serviceWorker.register(
           "./sw.js"
         );
-
     }
 
     await navigator.serviceWorker.ready;
@@ -886,14 +861,11 @@ async function getServiceWorker(){
     );
 
     return null;
-
   }
-
 }
 
-
 /* =========================================================
-   CONVERSIONE VAPID KEY
+   VAPID
    ========================================================= */
 
 function urlBase64ToUint8Array(base64String){
@@ -927,16 +899,13 @@ function urlBase64ToUint8Array(base64String){
 
     outputArray[i]=
       rawData.charCodeAt(i);
-
   }
 
   return outputArray;
-
 }
 
-
 /* =========================================================
-   INVIO SUBSCRIPTION A CLOUDFLARE
+   SUBSCRIPTION
    ========================================================= */
 
 async function sendSubscriptionToServer(
@@ -970,7 +939,6 @@ async function sendSubscriptionToServer(
       throw new Error(
         `Server push HTTP ${response.status}`
       );
-
     }
 
     console.log(
@@ -987,14 +955,11 @@ async function sendSubscriptionToServer(
     );
 
     return false;
-
   }
-
 }
 
-
 /* =========================================================
-   ATTIVA PUSH
+   PUSH
    ========================================================= */
 
 async function enablePushNotifications(){
@@ -1006,11 +971,10 @@ async function enablePushNotifications(){
   ){
 
     console.warn(
-      "Push Web non supportato da questo browser."
+      "Push Web non supportato."
     );
 
     return false;
-
   }
 
   try{
@@ -1025,7 +989,6 @@ async function enablePushNotifications(){
       );
 
       return false;
-
     }
 
     const registration=
@@ -1047,7 +1010,6 @@ async function enablePushNotifications(){
               VAPID_PUBLIC_KEY
             )
         });
-
     }
 
     pushSubscription=
@@ -1063,7 +1025,6 @@ async function enablePushNotifications(){
       console.log(
         "🔔 Push Agenda attivo."
       );
-
     }
 
     return true;
@@ -1076,40 +1037,27 @@ async function enablePushNotifications(){
     );
 
     return false;
-
   }
-
 }
-
-
-/* =========================================================
-   RICHIESTA PERMESSO NOTIFICHE
-   ========================================================= */
 
 async function requestNotificationPermission(){
 
   if(!("Notification" in window)){
-
     return "unsupported";
-
   }
 
   if(
     Notification.permission===
     "granted"
   ){
-
     return "granted";
-
   }
 
   if(
     Notification.permission===
     "denied"
   ){
-
     return "denied";
-
   }
 
   try{
@@ -1119,14 +1067,11 @@ async function requestNotificationPermission(){
   }catch{
 
     return "denied";
-
   }
-
 }
 
-
 /* =========================================================
-   COMUNICAZIONE EVENTO A CLOUDFLARE
+   SCHEDULE PUSH
    ========================================================= */
 
 async function pushScheduleEvent(event){
@@ -1143,15 +1088,11 @@ async function pushScheduleEvent(event){
         pushSubscription=
           await registration.pushManager
             .getSubscription();
-
       }
-
     }
 
     if(!pushSubscription){
-
       return false;
-
     }
 
     const reminderAt=
@@ -1188,9 +1129,7 @@ async function pushScheduleEvent(event){
               pushSubscription.toJSON
               ?pushSubscription.toJSON()
               :pushSubscription
-
           })
-
         }
       );
 
@@ -1199,7 +1138,6 @@ async function pushScheduleEvent(event){
       throw new Error(
         `Schedule HTTP ${response.status}`
       );
-
     }
 
     console.log(
@@ -1212,20 +1150,13 @@ async function pushScheduleEvent(event){
   }catch(error){
 
     console.warn(
-      "Programmazione Push non ancora disponibile:",
+      "Programmazione Push non disponibile:",
       error
     );
 
     return false;
-
   }
-
 }
-
-
-/* =========================================================
-   CANCELLAZIONE EVENTO SU CLOUDFLARE
-   ========================================================= */
 
 async function pushDeleteEvent(eventId){
 
@@ -1244,14 +1175,11 @@ async function pushDeleteEvent(eventId){
       "Cancellazione Push non disponibile:",
       error
     );
-
   }
-
 }
 
-
 /* =========================================================
-   CALCOLO ORA PROMEMORIA
+   ORA PROMEMORIA
    ========================================================= */
 
 function reminderAtTime(event){
@@ -1281,12 +1209,10 @@ function reminderAtTime(event){
     Number(event.reminder||0)*
     60000
   );
-
 }
 
-
 /* =========================================================
-   APERTURA NUOVO EVENTO
+   NUOVO EVENTO
    ========================================================= */
 
 function openNewEvent(){
@@ -1313,12 +1239,10 @@ function openNewEvent(){
   $("modal").classList.remove(
     "hidden"
   );
-
 }
 
-
 /* =========================================================
-   MODIFICA EVENTO
+   MODIFICA
    ========================================================= */
 
 function openEditEvent(id){
@@ -1368,12 +1292,10 @@ function openEditEvent(id){
   $("modal").classList.remove(
     "hidden"
   );
-
 }
 
-
 /* =========================================================
-   ELIMINA EVENTO
+   ELIMINA
    ========================================================= */
 
 async function deleteEvent(id){
@@ -1391,9 +1313,7 @@ async function deleteEvent(id){
       `Vuoi eliminare l'attività "${event.title}"?`
     )
   ){
-
     return;
-
   }
 
   if(
@@ -1404,18 +1324,13 @@ async function deleteEvent(id){
       reminderTimers.get(event.id)
     );
 
-    reminderTimers.delete(
-      event.id
-    );
-
+    reminderTimers.delete(event.id);
   }
 
   if(
     activeAlarmId===event.id
   ){
-
     stopAlarm();
-
   }
 
   await pushDeleteEvent(
@@ -1431,31 +1346,21 @@ async function deleteEvent(id){
   save();
 
   renderAll();
-
 }
 
-
 /* =========================================================
-   PULSANTE NUOVO
+   NUOVO
    ========================================================= */
 
 $("addBtn").onclick=async()=>{
 
-  /*
-   * Questo è un gesto dell'utente:
-   * qui possiamo chiedere il permesso
-   * alle notifiche e creare la PushSubscription.
-   */
-
   await enablePushNotifications();
 
   openNewEvent();
-
 };
 
-
 /* =========================================================
-   CHIUDI MODALE
+   CHIUDI
    ========================================================= */
 
 $("closeBtn").onclick=()=>{
@@ -1465,30 +1370,22 @@ $("closeBtn").onclick=()=>{
   $("modal").classList.add(
     "hidden"
   );
-
 };
-
 
 $("modal").onclick=e=>{
 
-  if(
-    e.target.id===
-    "modal"
-  ){
+  if(e.target.id==="modal"){
 
     editingEventId=null;
 
     $("modal").classList.add(
       "hidden"
     );
-
   }
-
 };
 
-
 /* =========================================================
-   SALVATAGGIO EVENTO
+   SALVATAGGIO
    ========================================================= */
 
 $("eventForm").onsubmit=
@@ -1521,14 +1418,7 @@ $("eventForm").onsubmit=
 
       notes:
         $("notes").value.trim()
-
     };
-
-
-    /*
-     * Se l'utente ha scelto una notifica,
-     * assicuriamoci che Push sia attiva.
-     */
 
     if(
       eventData.reminderType===
@@ -1536,13 +1426,7 @@ $("eventForm").onsubmit=
     ){
 
       await enablePushNotifications();
-
     }
-
-
-    /* ===========================
-       MODIFICA
-       =========================== */
 
     if(
       editingEventId!==null
@@ -1577,7 +1461,6 @@ $("eventForm").onsubmit=
           reminderTimers.delete(
             updatedEvent.id
           );
-
         }
 
         events[index]=
@@ -1589,11 +1472,6 @@ $("eventForm").onsubmit=
           updatedEvent
         );
 
-        /*
-         * Comunica a Cloudflare
-         * il nuovo promemoria.
-         */
-
         if(
           updatedEvent.reminderType===
           "notification"
@@ -1602,19 +1480,10 @@ $("eventForm").onsubmit=
           await pushScheduleEvent(
             updatedEvent
           );
-
         }
-
       }
 
-    }
-
-
-    /* ===========================
-       NUOVO EVENTO
-       =========================== */
-
-    else{
+    }else{
 
       const newEvent={
         id:Date.now(),
@@ -1631,12 +1500,6 @@ $("eventForm").onsubmit=
         newEvent
       );
 
-
-      /*
-       * Comunica a Cloudflare
-       * il nuovo promemoria.
-       */
-
       if(
         newEvent.reminderType===
         "notification"
@@ -1645,15 +1508,8 @@ $("eventForm").onsubmit=
         await pushScheduleEvent(
           newEvent
         );
-
       }
-
     }
-
-
-    /* ===========================
-       RESET MODALE
-       =========================== */
 
     editingEventId=null;
 
@@ -1679,22 +1535,15 @@ $("eventForm").onsubmit=
     );
 
     renderAll();
-
   };
-
 
 /* =========================================================
    TIMER LOCALE
    ========================================================= */
 
 function reminderAt(event){
-
-  return reminderAtTime(
-    event
-  );
-
+  return reminderAtTime(event);
 }
-
 
 function scheduleReminder(event){
 
@@ -1713,7 +1562,6 @@ function scheduleReminder(event){
     reminderTimers.delete(
       event.id
     );
-
   }
 
   const delay=
@@ -1732,21 +1580,17 @@ function scheduleReminder(event){
     event.id,
     timer
   );
-
 }
-
 
 function scheduleAllReminders(){
 
   events.forEach(
     scheduleReminder
   );
-
 }
 
-
 /* =========================================================
-   PROMEMORIA LOCALE
+   PROMEMORIA
    ========================================================= */
 
 async function fireReminder(event){
@@ -1759,7 +1603,6 @@ async function fireReminder(event){
     startAlarm(event);
 
     return;
-
   }
 
   const granted=
@@ -1778,7 +1621,6 @@ async function fireReminder(event){
       await reg.showNotification(
         "Agenda Personale",
         {
-
           body:
             `${event.title}\n${text}`,
 
@@ -1797,7 +1639,6 @@ async function fireReminder(event){
           data:{
             eventId:event.id
           }
-
         }
       );
 
@@ -1809,17 +1650,13 @@ async function fireReminder(event){
         "Notifica locale non disponibile:",
         error
       );
-
     }
-
   }
 
   showInAppMessage(
     event
   );
-
 }
-
 
 function showInAppMessage(event){
 
@@ -1827,12 +1664,10 @@ function showInAppMessage(event){
     event,
     true
   );
-
 }
 
-
 /* =========================================================
-   ALLARME LOCALE
+   ALLARME
    ========================================================= */
 
 function startAlarm(
@@ -1874,9 +1709,7 @@ function startAlarm(
       .catch(()=>{});
 
   }catch{}
-
 }
-
 
 function stopAlarm(){
 
@@ -1887,7 +1720,6 @@ function stopAlarm(){
     alarmAudio.currentTime=0;
 
     alarmAudio=null;
-
   }
 
   $("alarmModal")
@@ -1895,13 +1727,10 @@ function stopAlarm(){
     .add("hidden");
 
   activeAlarmId=null;
-
 }
-
 
 $("stopAlarmBtn").onclick=
   stopAlarm;
-
 
 /* =========================================================
    MODIFICA / ELIMINA
@@ -1925,7 +1754,6 @@ document.addEventListener(
       );
 
       return;
-
     }
 
     const deleteBtn=
@@ -1940,15 +1768,12 @@ document.addEventListener(
       deleteEvent(
         deleteBtn.dataset.id
       );
-
     }
-
   }
 );
 
-
 /* =========================================================
-   VISIBILITÀ APP
+   VISIBILITÀ
    ========================================================= */
 
 document.addEventListener(
@@ -1958,18 +1783,14 @@ document.addEventListener(
     if(!document.hidden){
 
       scheduleAllReminders();
-
     }
-
   }
 );
-
 
 window.addEventListener(
   "focus",
   scheduleAllReminders
 );
-
 
 /* =========================================================
    AVVIO
@@ -1977,18 +1798,7 @@ window.addEventListener(
 
 (async()=>{
 
-  /*
-   * Registriamo subito il service worker.
-   * Non chiediamo ancora il permesso:
-   * quello avviene quando l'utente preme "Nuovo".
-   */
-
   await getServiceWorker();
-
-  /*
-   * Se l'utente aveva già dato il permesso
-   * in precedenza, recuperiamo la subscription.
-   */
 
   if(
     "Notification" in window &&
@@ -2000,7 +1810,6 @@ window.addEventListener(
       await enablePushNotifications();
 
     }catch{}
-
   }
 
   scheduleAllReminders();
